@@ -25,3 +25,11 @@ unittest {
     };
     preprocess(src).shouldEqual(src);
 }
+
+@Name("assert with message")
+unittest {
+    immutable src = q{
+        assert(a == b, "a is not equal to b");
+    };
+    preprocess(src).shouldEqual(src);
+}
