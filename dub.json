@@ -1,0 +1,20 @@
+{
+    "name": "preassert",
+    "description": "Assert preprocessor for D",
+    "homepage": "https://github.com/atilaneves/preassert",
+    "authors": ["Atila Neves"],
+    "license": "BSD 3-clause",
+    "targetType": "library",
+    "targetPath": "bin",
+    "configurations": [
+        {"name": "library"},
+        {"name": "unittest",
+         "targetType": "executable",
+         "sourcePaths": ["tests"],
+         "mainSourceFile": "tests/ut.d",
+         "dependencies": {
+             "unit-threaded": "~>0.5.4"
+         }
+        }
+    ]
+}
