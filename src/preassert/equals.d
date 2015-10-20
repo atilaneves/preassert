@@ -8,10 +8,20 @@ version(unittest) {
 @safe:
 
 string preprocess(in string input) {
-    return "";
+    return input;
 }
 
 @Name("Empty input")
 unittest {
     preprocess("").shouldEqual("");
+}
+
+@Name("No asserts in input")
+unittest {
+    immutable src = q{
+        int foo(int i, int j) {
+            return i + j;
+        }
+    };
+    preprocess(src).shouldEqual(src);
 }
