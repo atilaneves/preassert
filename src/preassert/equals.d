@@ -62,10 +62,10 @@ unittest {
 @Name("assert with no message and literals")
 unittest {
     immutable src = q{
-        assert(a == b);
+        assert(3 == 4);
     };
     preprocess(src).shouldEqual(q{import preassert.format;
 
-        assert(a == b, equalsMessage(a, b));
+        assert(3 == 4, equalsMessage(3, 4));
     });
 }
