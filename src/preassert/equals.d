@@ -1,4 +1,8 @@
 module preassert.equals;
+
+import std.algorithm;
+import std.range;
+
 version(unittest) {
     import unit_threaded;
 } else {
@@ -7,8 +11,17 @@ version(unittest) {
 
 @safe:
 
+
 string preprocess(in string input) pure nothrow {
-    return input;
+    auto fromAssert = input.find("assert");
+    if(fromAssert.empty)
+        return input;
+
+    if(fromAssert.canFind(","))
+        return input;
+
+    return "import preprocess.format;\n" ~
+        input.replace(");", ", equalsMessage(a, b));");
 }
 
 @Name("Empty input")
@@ -32,4 +45,16 @@ unittest {
         assert(a == b, "a is not equal to b");
     };
     preprocess(src).shouldEqual(src);
+}
+
+
+@Name("assert with no messge")
+unittest {
+    immutable src = q{
+        assert(a == b);
+    };
+    preprocess(src).shouldEqual(q{import preprocess.format;
+
+        assert(a == b, equalsMessage(a, b));
+    });
 }
