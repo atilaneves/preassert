@@ -2,6 +2,8 @@ module preassert.equals;
 
 import std.algorithm;
 import std.range;
+import std.conv;
+import std.string;
 
 version(unittest) {
     import unit_threaded;
@@ -12,16 +14,28 @@ version(unittest) {
 @safe:
 
 
-string preprocess(in string input) pure nothrow {
-    auto fromAssert = input.find("assert");
+string preprocess(in string input) pure {
+    auto fromAssert = input.find("assert(");
     if(fromAssert.empty)
         return input;
 
     if(fromAssert.canFind(","))
         return input;
 
+    auto valueRange = fromAssert.save();
+    immutable findAssert = valueRange.findSkip("assert(");
+    assert(findAssert);
+    auto valueStr = valueRange.until("==").to!string.strip;
+
+    auto expectedRange = fromAssert.save();
+    immutable findEquals = expectedRange.findSkip("==");
+    assert(findEquals);
+    immutable expectedStr = expectedRange.until(")").to!string.strip;
+
     return "import preassert.format;\n" ~
-        input.replace(");", ", equalsMessage(a, b));");
+        input.until("assert(").to!string ~ "assert(" ~ valueStr ~ " == " ~ expectedStr ~
+        text(", equalsMessage(", valueStr, ", ", expectedStr) ~
+        "));\n    ";
 }
 
 @Name("Empty input")
