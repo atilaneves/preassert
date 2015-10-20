@@ -1,22 +1,30 @@
-module preprocess.format;
+module preassert.format;
 
 import std.range;
 import std.conv;
 import std.array;
+import std.traits;
+import std.algorithm;
 
 @safe:
 
 
+private string spaces() pure nothrow {
+    return "    ";
+}
+
 private string getOutputPrefix(in string file, in size_t line) pure {
-    return "    " ~ file ~ ":" ~ line.to!string ~ " - ";
+    return spaces ~ file ~ ":" ~ line.to!string ~ " - ";
 }
 
 
 string equalsMessage(V, E)(V value, E expected,
                            in string file = __FILE__, in size_t line = __LINE__) {
-    return (formatValue("Expected: ", expected) ~
-            formatValue("     Got: ", value)).
-        map!(a => getOutputPrefix(file, line) ~ a).
+    return "\n" ~
+        (formatValue("Expected: ", expected) ~
+         formatValue("     Got: ", value)).
+        //map!(a => getOutputPrefix(file, line) ~ a).
+        map!(a => spaces ~ a).
         join("\n");
 }
 

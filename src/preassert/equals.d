@@ -20,7 +20,7 @@ string preprocess(in string input) pure nothrow {
     if(fromAssert.canFind(","))
         return input;
 
-    return "import preprocess.format;\n" ~
+    return "import preassert.format;\n" ~
         input.replace(");", ", equalsMessage(a, b));");
 }
 
@@ -48,12 +48,23 @@ unittest {
 }
 
 
-@Name("assert with no messge")
+@Name("assert with no messge and variables")
 unittest {
     immutable src = q{
         assert(a == b);
     };
-    preprocess(src).shouldEqual(q{import preprocess.format;
+    preprocess(src).shouldEqual(q{import preassert.format;
+
+        assert(a == b, equalsMessage(a, b));
+    });
+}
+
+@Name("assert with no message and literals")
+unittest {
+    immutable src = q{
+        assert(a == b);
+    };
+    preprocess(src).shouldEqual(q{import preassert.format;
 
         assert(a == b, equalsMessage(a, b));
     });
