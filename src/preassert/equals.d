@@ -7,7 +7,7 @@ version(unittest) {
 
 @safe:
 
-string preprocess(in string input) {
+string preprocess(in string input) pure nothrow {
     return input;
 }
 
