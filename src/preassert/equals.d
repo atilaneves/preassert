@@ -7,8 +7,6 @@ import std.string;
 
 version(unittest) {
     import unit_threaded;
-} else {
-    struct Name { string _; }
 }
 
 @safe:
@@ -38,12 +36,12 @@ string preprocess(in string input) pure {
         "));\n    ";
 }
 
-@Name("Empty input")
+@("Empty input")
 unittest {
     preprocess("").shouldEqual("");
 }
 
-@Name("No asserts in input")
+@("No asserts in input")
 unittest {
     immutable src = q{
         int foo(int i, int j) {
@@ -53,7 +51,7 @@ unittest {
     preprocess(src).shouldEqual(src);
 }
 
-@Name("assert with message")
+@("assert with message")
 unittest {
     immutable src = q{
         assert(a == b, "a is not equal to b");
@@ -62,7 +60,7 @@ unittest {
 }
 
 
-@Name("assert with no messge and variables")
+@("assert with no messge and variables")
 unittest {
     immutable src = q{
         assert(a == b);
@@ -73,7 +71,7 @@ unittest {
     });
 }
 
-@Name("assert with no message and literals")
+@("assert with no message and literals")
 unittest {
     immutable src = q{
         assert(3 == 4);

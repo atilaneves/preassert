@@ -10,10 +10,10 @@
         {"name": "library"},
         {"name": "unittest",
          "targetType": "executable",
-         "sourcePaths": ["tests"],
-         "mainSourceFile": "tests/ut.d",
+         "mainSourceFile": "bin/ut.d",
+         "preBuildCommands": ["dub run unit-threaded -c gen_ut_main -- -f bin/ut.d"],
          "dependencies": {
-             "unit-threaded": "~>0.5.4"
+             "unit-threaded": "~>0.6.0"
          }
         }
     ]
